@@ -75,12 +75,13 @@ class AccessToken extends CoreAccessToken
     /**
      * {@inheritdoc}.
      */
-    public function getTokenFromServer()
+    public function getTokenFromServer($ticket = '')
     {
+        if(!$ticket)  $ticket = $this->verifyTicket->getTicket();
         $data = [
             'component_appid' => $this->appId,
             'component_appsecret' => $this->secret,
-            'component_verify_ticket' => $this->verifyTicket->getTicket(),
+            'component_verify_ticket' => $ticket
         ];
 
         $http = $this->getHttp();

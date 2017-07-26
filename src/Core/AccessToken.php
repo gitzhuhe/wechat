@@ -110,13 +110,13 @@ class AccessToken
      *
      * @return string
      */
-    public function getToken($forceRefresh = false)
+    public function getToken($forceRefresh = false, $ticket = '')
     {
         $cacheKey = $this->getCacheKey();
         $cached = $this->getCache()->fetch($cacheKey);
 
         if ($forceRefresh || empty($cached)) {
-            $token = $this->getTokenFromServer();
+            $token = $this->getTokenFromServer($ticket);
 
             // XXX: T_T... 7200 - 1500
             $this->getCache()->save($cacheKey, $token[$this->tokenJsonKey], $token['expires_in'] - 1500);
@@ -227,7 +227,7 @@ class AccessToken
      *
      * @return string
      */
-    public function getTokenFromServer()
+    public function getTokenFromServer( $ticket = '')
     {
         $params = [
             'appid' => $this->appId,
